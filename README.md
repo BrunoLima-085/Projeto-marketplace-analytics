@@ -1,12 +1,12 @@
-# Marketplace SQL Analytics Project
+# Marketplace Analytics Project
 
-Simulação de um ambiente de **Data Analytics para um marketplace**, utilizando PostgreSQL e SQL para modelagem de dados, análises de negócio e criação de métricas estratégicas.
+Simulação de um ambiente de **Data Analytics para um marketplace**, utilizando PostgreSQL, SQL e Python para modelagem de dados, análises de negócio, criação de métricas estratégicas e pipeline de extração de dados.
 
-O projeto demonstra práticas utilizadas por **analistas de dados**, incluindo modelagem relacional, cálculos de métricas de negócio, uso de Window Functions e criação de views analíticas para uso em dashboards de Business Intelligence.
+O projeto demonstra práticas utilizadas por **analistas de dados**, incluindo modelagem relacional, cálculos de métricas de negócio, Window Functions, views analíticas para BI e pipeline de ETL com Python.
 
 ---
 
-# 📌 Contexto de Negócio
+## 📌 Contexto de Negócio
 
 Este projeto simula um **ecossistema de marketplace**, onde múltiplos vendedores comercializam produtos para clientes dentro de uma mesma plataforma.
 
@@ -14,34 +14,17 @@ Um dos principais desafios resolvidos na modelagem é a **integridade financeira
 
 O preço de cada produto é registrado na tabela `itens_pedido` no momento da venda. Isso garante que:
 
-* alterações futuras no preço do produto **não afetem vendas passadas**
-* o histórico financeiro do marketplace permaneça **consistente**
-* os relatórios financeiros sejam **auditáveis**
+- alterações futuras no preço do produto **não afetem vendas passadas**
+- o histórico financeiro do marketplace permaneça **consistente**
+- os relatórios financeiros sejam **auditáveis**
 
-Esse padrão é utilizado em grandes plataformas como:
-
-* Amazon
-* Mercado Livre
-* Shopee
-* iFood
+Esse padrão é utilizado em grandes plataformas como Amazon, Mercado Livre, Shopee e iFood.
 
 ---
 
-# 🧱 Modelo de Dados
+## 🧱 Modelo de Dados
 
-O banco de dados segue um modelo relacional típico de plataformas de e-commerce.
-
-Principais entidades:
-
-* **clientes**
-* **vendedores**
-* **produtos**
-* **pedidos**
-* **itens_pedido**
-
----
-
-# 📊 Entity Relationship Diagram (ERD)
+O banco de dados segue um modelo relacional típico de plataformas de e-commerce, composto pelas entidades: **clientes**, **vendedores**, **produtos**, **pedidos** e **itens_pedido**.
 
 ```text
 clientes
@@ -86,36 +69,32 @@ nome_vendedor
 comissao_percentual
 ```
 
-Esse modelo permite analisar:
+---
 
-* vendas por vendedor
-* produtos mais vendidos
-* comportamento de compra de clientes
-* receita da plataforma
+## 🛠️ Tecnologias Utilizadas
+
+| Camada | Tecnologia |
+|---|---|
+| Banco de Dados | PostgreSQL |
+| Linguagem SQL | SQL (DDL, DML, DQL) |
+| Ferramenta SQL | pgAdmin |
+| Linguagem Python | Python 3 |
+| Bibliotecas Python | pandas, SQLAlchemy |
+
+**Conceitos aplicados:**
+
+- Modelagem Relacional
+- DDL / DML / DQL
+- JOINs, GROUP BY, Window Functions
+- CTEs (Common Table Expressions)
+- Views Analíticas
+- Constraints de integridade referencial
+- Pipeline de ETL com Python
+- Logging estruturado
 
 ---
 
-# 🛠️ Tecnologias Utilizadas
-
-* **Banco de Dados:** PostgreSQL
-* **Linguagem:** SQL
-* **Ferramenta:** pgAdmin
-
-Conceitos aplicados no projeto:
-
-* DDL (Data Definition Language)
-* DML (Data Manipulation Language)
-* DQL (Data Query Language)
-* JOINs
-* GROUP BY
-* Window Functions
-* CTEs (Common Table Expressions)
-* Views analíticas
-* Constraints de integridade
-
----
-
-# 📂 Estrutura do Projeto
+## 📂 Estrutura do Projeto
 
 ```text
 marketplace-analytics-sql
@@ -126,71 +105,48 @@ marketplace-analytics-sql
 │   ├── 03_analytical_queries.sql
 │   └── 04_views.sql
 │
+├── python
+│   └── pipeline_etl.py
+│
 └── README.md
 ```
 
----
-
 ### 01_schema.sql
 
-Criação da estrutura do banco de dados:
-
-* schema
-* tabelas
-* primary keys
-* foreign keys
-* regras de integridade
-* constraints
-
----
+Criação da estrutura do banco de dados: schema, tabelas, primary keys, foreign keys e constraints de integridade.
 
 ### 02_seed_data.sql
 
-População do banco com dados simulados de marketplace:
-
-* clientes
-* vendedores
-* produtos
-* pedidos
-* itens vendidos
-
-Esses dados permitem executar análises realistas.
-
----
+População do banco com dados simulados de marketplace: clientes, vendedores, produtos, pedidos e itens vendidos.
 
 ### 03_analytical_queries.sql
 
-Consultas SQL utilizadas para responder perguntas de negócio.
+Consultas SQL para responder perguntas de negócio:
 
-Exemplos de análises implementadas:
-
-* Receita total do marketplace
-* Receita por vendedor
-* Ranking de vendedores
-* Produtos mais vendidos
-* Clientes que mais gastaram
-* Ticket médio por pedido
-* Receita diária do marketplace
-
----
+- Receita total do marketplace
+- Receita e ranking de vendedores
+- Produtos mais vendidos
+- Clientes que mais gastaram
+- Ticket médio por pedido
+- Receita diária do marketplace
 
 ### 04_views.sql
 
-Criação de **views analíticas** que consolidam métricas importantes para análise e dashboards.
+Views analíticas que consolidam métricas para uso em dashboards de BI:
 
-Exemplo de métricas calculadas:
+- GMV (Gross Merchandise Volume)
+- Receita da plataforma (comissão)
+- Repasse para vendedores
+- Ticket médio por vendedor
+- Ranking de vendedores por faturamento
 
-* GMV (Gross Merchandise Volume)
-* Receita da plataforma (comissão)
-* Repasse para vendedores
-* Ticket médio por vendedor
-* Ranking de vendedores por faturamento
+### pipeline_etl.py
 
-Essas views simulam uma **camada semântica de dados utilizada por ferramentas de BI**.
+Pipeline de ETL que extrai dados do PostgreSQL, aplica transformações e exporta os resultados. Detalhes na seção Python abaixo.
 
 ---
 
-# 📊 Exemplo de Análise
+## 🗄️ SQL — Exemplos de Análise
 
 ### Receita por vendedor
 
@@ -199,18 +155,13 @@ SELECT
     v.nome_vendedor,
     SUM(ip.quantidade * ip.preco_unitario) AS receita_vendedor
 FROM vendedores v
-JOIN produtos p
-    ON v.id_vendedor = p.id_vendedor
-JOIN itens_pedido ip
-    ON p.id_produto = ip.id_produto
-GROUP BY
-    v.nome_vendedor
+JOIN produtos p ON v.id_vendedor = p.id_vendedor
+JOIN itens_pedido ip ON p.id_produto = ip.id_produto
+GROUP BY v.nome_vendedor
 ORDER BY receita_vendedor DESC;
 ```
 
----
-
-# 📊 Métrica de Negócio: Ticket Médio
+### Ticket médio por pedido
 
 ```sql
 SELECT
@@ -224,50 +175,96 @@ FROM itens_pedido;
 
 ---
 
-# 📊 Possível Dashboard (Futuro)
+## 🐍 Python — Pipeline de ETL
 
-Esse banco pode alimentar dashboards de Business Intelligence.
+O módulo `pipeline_etl.py` implementa um pipeline de ETL (Extração, Transformação e Carga) com as seguintes etapas:
 
-Principais KPIs possíveis:
+### Extração
 
-* Receita total do marketplace
-* Ticket médio
-* Top vendedores
-* Produtos mais vendidos
-* Receita diária
+Conexão com o banco PostgreSQL via **SQLAlchemy**, executando a query sobre a view `view_performance_consolidada` e carregando os resultados em um DataFrame com **pandas**.
 
-Ferramentas possíveis:
+### Transformação
 
-* Power BI
-* Tableau
-* Metabase
+- Conversão da coluna `data_pedido` para o tipo `datetime`
+- Cálculo da comissão (`faturamento_bruto × taxa_comissao / 100`)
+- Padronização de colunas monetárias para duas casas decimais
+
+### Carga
+
+Exportação dos dados tratados para um arquivo `.csv` (`dados_performance_vendedores.csv`).
+
+### Logging
+
+Todas as etapas são monitoradas via **logging estruturado**, com saída simultânea em console e arquivo `pipeline.log`.
+
+### Executando o pipeline
+
+**Pré-requisitos:**
+
+```bash
+pip install pandas sqlalchemy psycopg2-binary
+```
+
+**Configuração:**
+
+Edite as variáveis de conexão no início do arquivo `pipeline_etl.py`:
+
+```python
+DB_CONFIG = {
+    "user": "postgres",
+    "password": "sua_senha",
+    "host": "localhost",
+    "port": "5432",
+    "database": "marketplace_db"
+}
+```
+
+**Execução:**
+
+```bash
+python pipeline_etl.py
+```
+
+**Saída esperada:**
+
+```
+2024-03-01 10:00:00 - INFO - Pipeline de dados iniciado
+2024-03-01 10:00:00 - INFO - Iniciando extração de dados
+2024-03-01 10:00:01 - INFO - Extração concluída. Registros carregados: 5
+2024-03-01 10:00:01 - INFO - Iniciando transformação dos dados
+2024-03-01 10:00:01 - INFO - Transformação concluída
+2024-03-01 10:00:01 - INFO - Dados salvos em CSV
+2024-03-01 10:00:01 - INFO - Pipeline finalizado
+```
 
 ---
 
-# 🚀 Roadmap do Projeto
+## 📊 Possível Dashboard (Em desenvolvimento)
 
-Possíveis evoluções do projeto:
+O banco e o pipeline estão prontos para alimentar dashboards de Business Intelligence.
 
-* [ ] Integração com **Python**
-* [ ] Análise exploratória com **Pandas**
-* [ ] Pipeline de **ETL**
-* [ ] Dashboard em **Power BI**
-* [ ] Análise de comportamento de clientes
+**KPIs mapeados:**
 
----
+- Receita total do marketplace (GMV)
+- Ticket médio
+- Top vendedores por faturamento
+- Produtos mais vendidos
+- Receita diária
 
-# 📊 Objetivo do Projeto
-
-Demonstrar habilidades essenciais para **Analistas de Dados**, incluindo:
-
-* modelagem de banco de dados
-* análise exploratória em SQL
-* criação de métricas de negócio
-* uso de Window Functions
-* construção de camada analítica para BI
+**Ferramentas candidatas:** Power BI · Tableau · Metabase
 
 ---
 
-# 👨‍💻 Autor
+## 🚀 Roadmap
 
-Projeto desenvolvido por Bruno Lima como parte de um **portfólio de Data Analytics**.
+- [x] Modelagem relacional no PostgreSQL
+- [x] Queries analíticas e Window Functions
+- [x] Views analíticas para camada semântica de BI
+- [x] Pipeline de ETL com Python
+- [ ] Dashboard em Power BI
+
+---
+
+## 👨‍💻 Autor
+
+Desenvolvido por **Bruno Lima** como parte de um portfólio de Data Analytics.
