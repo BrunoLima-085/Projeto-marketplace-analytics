@@ -1,0 +1,10 @@
+# Dados gerados pelo pipeline
+Data/
+
+# Logs gerados pelo pipeline
+*.log
+
+# Arquivos de ambiente Python
+__pycache__/
+*.pyc
+.env
