@@ -79,7 +79,8 @@ comissao_percentual
 | Linguagem SQL | SQL (DDL, DML, DQL) |
 | Ferramenta SQL | pgAdmin |
 | Linguagem Python | Python 3 |
-| Bibliotecas Python | pandas, SQLAlchemy |
+| Bibliotecas Python | pandas, psycopg2 |
+| BI | Power BI |
 
 **Conceitos aplicados:**
 
@@ -99,17 +100,23 @@ comissao_percentual
 ```text
 marketplace-analytics-sql
 │
-├── sql
+├── SQL
 │   ├── 01_schema.sql
 │   ├── 02_seed_data.sql
 │   ├── 03_analytical_queries.sql
 │   └── 04_views.sql
 │
-├── python
+├── Python
 │   └── pipeline_etl.py
 │
+├── Data
+│   └── dados_performance_vendedores.csv  ← gerado localmente, não versionado
+│
+├── .gitignore
 └── README.md
 ```
+
+> **Nota:** A pasta `Data/` está listada no `.gitignore` e não é versionada no repositório. O arquivo `dados_performance_vendedores.csv` é gerado localmente ao executar o `pipeline_etl.py`.
 
 ### 01_schema.sql
 
@@ -142,7 +149,7 @@ Views analíticas que consolidam métricas para uso em dashboards de BI:
 
 ### pipeline_etl.py
 
-Pipeline de ETL que extrai dados do PostgreSQL, aplica transformações e exporta os resultados. Detalhes na seção Python abaixo.
+Pipeline de ETL que extrai dados do PostgreSQL via **psycopg2**, aplica transformações com **pandas** e exporta os resultados em CSV.
 
 ---
 
@@ -181,7 +188,7 @@ O módulo `pipeline_etl.py` implementa um pipeline de ETL (Extração, Transform
 
 ### Extração
 
-Conexão com o banco PostgreSQL via **SQLAlchemy**, executando a query sobre a view `view_performance_consolidada` e carregando os resultados em um DataFrame com **pandas**.
+Conexão com o banco PostgreSQL via **psycopg2**, executando a query sobre a view `view_performance_consolidada` e carregando os resultados em um DataFrame com **pandas** via `cursor.fetchall()`.
 
 ### Transformação
 
@@ -191,7 +198,7 @@ Conexão com o banco PostgreSQL via **SQLAlchemy**, executando a query sobre a v
 
 ### Carga
 
-Exportação dos dados tratados para um arquivo `.csv` (`dados_performance_vendedores.csv`).
+Exportação dos dados tratados para `dados_performance_vendedores.csv` com encoding `utf-8-sig` para compatibilidade com Excel e Power BI.
 
 ### Logging
 
@@ -202,7 +209,7 @@ Todas as etapas são monitoradas via **logging estruturado**, com saída simult�
 **Pré-requisitos:**
 
 ```bash
-pip install pandas sqlalchemy psycopg2-binary
+pip install pandas psycopg2-binary
 ```
 
 **Configuração:**
@@ -215,7 +222,7 @@ DB_CONFIG = {
     "password": "sua_senha",
     "host": "localhost",
     "port": "5432",
-    "database": "marketplace_db"
+    "dbname": "seu_banco"
 }
 ```
 
@@ -239,19 +246,18 @@ python pipeline_etl.py
 
 ---
 
-## 📊 Possível Dashboard (Em desenvolvimento)
+## 📊 Dashboard — Power BI
 
-O banco e o pipeline estão prontos para alimentar dashboards de Business Intelligence.
+Os dados gerados pelo pipeline alimentam um dashboard no **Power BI Desktop**, consumindo o arquivo `dados_performance_vendedores.csv` como fonte.
 
-**KPIs mapeados:**
+**KPIs disponíveis:**
 
 - Receita total do marketplace (GMV)
-- Ticket médio
+- Ticket médio por vendedor
 - Top vendedores por faturamento
-- Produtos mais vendidos
-- Receita diária
-
-**Ferramentas candidatas:** Power BI · Tableau · Metabase
+- Receita da plataforma (comissão)
+- Repasse líquido para vendedores
+- Ranking de vendedores
 
 ---
 
@@ -261,7 +267,7 @@ O banco e o pipeline estão prontos para alimentar dashboards de Business Intell
 - [x] Queries analíticas e Window Functions
 - [x] Views analíticas para camada semântica de BI
 - [x] Pipeline de ETL com Python
-- [ ] Dashboard em Power BI
+- [x] Dashboard em Power BI
 
 ---
 
