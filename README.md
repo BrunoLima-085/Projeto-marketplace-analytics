@@ -308,9 +308,9 @@ exit
 
 ## 📊 Dashboard — Power BI
 
-Os dados gerados pelo pipeline alimentam um dashboard no **Power BI Desktop**, consumindo o arquivo `dados_performance_vendedores.csv` como fonte.
+> **Em desenvolvimento.** O dashboard será construído no **Power BI Desktop**, consumindo o arquivo `dados_performance_vendedores.csv` gerado pelo pipeline como fonte de dados.
 
-**KPIs disponíveis:**
+**KPIs previstos:**
 
 - Receita total do marketplace (GMV)
 - Ticket médio por vendedor
@@ -328,7 +328,7 @@ Os dados gerados pelo pipeline alimentam um dashboard no **Power BI Desktop**, c
 - [x] Views analíticas para camada semântica de BI
 - [x] Pipeline de ETL com Python
 - [x] Automação de execução via `.bat`
-- [x] Dashboard em Power BI
+- [ ] Dashboard em Power BI
 
 ---
 
