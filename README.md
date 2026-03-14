@@ -80,6 +80,7 @@ comissao_percentual
 | Ferramenta SQL | pgAdmin |
 | Linguagem Python | Python 3 |
 | Bibliotecas Python | pandas, psycopg2 |
+| Automação | Windows Batch Script (.bat) |
 | BI | Power BI |
 
 **Conceitos aplicados:**
@@ -92,6 +93,7 @@ comissao_percentual
 - Constraints de integridade referencial
 - Pipeline de ETL com Python
 - Logging estruturado
+- Automação de execução via script `.bat`
 
 ---
 
@@ -113,6 +115,7 @@ marketplace-analytics-sql
 │   └── dados_performance_vendedores.csv  ← gerado localmente, não versionado
 │
 ├── .gitignore
+├── run_pipeline.bat
 └── README.md
 ```
 
@@ -150,6 +153,10 @@ Views analíticas que consolidam métricas para uso em dashboards de BI:
 ### pipeline_etl.py
 
 Pipeline de ETL que extrai dados do PostgreSQL via **psycopg2**, aplica transformações com **pandas** e exporta os resultados em CSV.
+
+### run_pipeline.bat
+
+Script de automação Windows que executa o pipeline com um duplo clique. Exibe feedback visual colorido (verde = sucesso, vermelho = erro), trata falhas com `errorlevel` e fecha automaticamente após 10 segundos em caso de sucesso.
 
 ---
 
@@ -226,10 +233,10 @@ DB_CONFIG = {
 }
 ```
 
-**Execução:**
+**Execução via terminal:**
 
 ```bash
-python pipeline_etl.py
+python Python/pipeline_etl.py
 ```
 
 **Saída esperada:**
@@ -243,6 +250,59 @@ python pipeline_etl.py
 2024-03-01 10:00:01 - INFO - Dados salvos em CSV
 2024-03-01 10:00:01 - INFO - Pipeline finalizado
 ```
+
+---
+
+## ⚙️ Automação — run_pipeline.bat
+
+O arquivo `run_pipeline.bat` permite executar o pipeline com um **duplo clique**, sem necessidade de abrir o terminal manualmente.
+
+```bat
+@echo off
+title Pipeline ETL - Marketplace Analytics
+chcp 65001 > nul
+color 0A
+echo ======================================================
+echo    AUTO-PROCESSAMENTO: MARKETPLACE ANALYTICS
+echo ======================================================
+echo [ %date% %time% ] Iniciando o motor de dados...
+cd /d "%~dp0"
+echo [ %date% %time% ] Rodando extração e carga de dados...
+python Python/pipeline_etl.py
+if %errorlevel% neq 0 (
+    echo.
+    color 0C
+    echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    echo    ERRO: Ocorreu um problema ao rodar o script.
+    echo    Verifique as mensagens acima ou o arquivo de log.
+    echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    pause
+    exit /b %errorlevel%
+)
+echo.
+echo ======================================================
+echo [ %date% %time% ] SUCESSO: Pipeline finalizado!
+echo ======================================================
+echo Esta janela fechara automaticamente em 10 segundos...
+timeout /t 10
+exit
+```
+
+**Comportamento:**
+
+- `chcp 65001` — garante encoding UTF-8 para exibição correta de acentuação
+- `color 0A` — terminal verde durante execução normal
+- `color 0C` — terminal vermelho em caso de erro
+- `cd /d "%~dp0"` — garante que o script sempre roda a partir da raiz do projeto
+- `errorlevel` — detecta falhas no script Python (`sys.exit(1)`) e exibe mensagem de diagnóstico
+- `timeout /t 10` — fecha automaticamente após 10 segundos em caso de sucesso
+
+**Pré-requisitos para rodar o `.bat`:**
+
+- PostgreSQL em execução com o schema `marketplace` populado
+- Python instalado e acessível via `PATH`
+- Bibliotecas `pandas` e `psycopg2-binary` instaladas
+- Credenciais corretas configuradas em `pipeline_etl.py`
 
 ---
 
@@ -267,6 +327,7 @@ Os dados gerados pelo pipeline alimentam um dashboard no **Power BI Desktop**, c
 - [x] Queries analíticas e Window Functions
 - [x] Views analíticas para camada semântica de BI
 - [x] Pipeline de ETL com Python
+- [x] Automação de execução via `.bat`
 - [x] Dashboard em Power BI
 
 ---
