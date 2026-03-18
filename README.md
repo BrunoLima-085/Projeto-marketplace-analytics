@@ -111,6 +111,9 @@ marketplace-analytics-sql
 ├── Python
 │   └── pipeline_etl.py
 │
+├── assets
+│   └── Dashboard_Final_Marketplace.png
+│
 ├── Data
 │   └── dados_performance_vendedores.csv  ← gerado localmente, não versionado
 │
@@ -308,16 +311,23 @@ exit
 
 ## 📊 Dashboard — Power BI
 
-> **Em desenvolvimento.** O dashboard será construído no **Power BI Desktop**, consumindo o arquivo `dados_performance_vendedores.csv` gerado pelo pipeline como fonte de dados.
+O dashboard foi desenvolvido no **Power BI Desktop**, consumindo o arquivo `dados_performance_vendedores.csv` gerado pelo pipeline como fonte de dados.
 
-**KPIs previstos:**
+![Dashboard de Performance de Vendedores](assets/Dashboard_Final_Marketplace.png)
 
-- Receita total do marketplace (GMV)
-- Ticket médio por vendedor
-- Top vendedores por faturamento
-- Receita da plataforma (comissão)
-- Repasse líquido para vendedores
-- Ranking de vendedores
+**KPIs entregues:**
+
+- **R$ 10,64 Mil** — Faturamento Total (GMV)
+- **R$ 1,14 Mil** — Receita da plataforma (comissão)
+- **R$ 9,50 Mil** — Repasse líquido para vendedores
+- **R$ 1,77 Mil** — Ticket Médio Geral
+
+**Visualizações:**
+
+- Ranking de vendedores por faturamento (gráfico de barras horizontais)
+- Faturamento e Ticket Médio por vendedor (gráfico combinado)
+- Participação no faturamento do marketplace (gráfico de rosca)
+- Filtro interativo por vendedor
 
 ---
 
@@ -328,7 +338,7 @@ exit
 - [x] Views analíticas para camada semântica de BI
 - [x] Pipeline de ETL com Python
 - [x] Automação de execução via `.bat`
-- [ ] Dashboard em Power BI
+- [x] Dashboard em Power BI
 
 ---
 
